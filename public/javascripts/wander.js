@@ -28,7 +28,34 @@ $(function(){
 	  socket.emit('up', {user: box.attr('class'), position: box.position().top })
   });
   
+  jwerty.key('a', function(){
+	  box.css('left', (box.position().left-1) + 'px');
+	  socket.emit('left', {user: box.attr('class'), position: box.position().left })
+  });
+  
+  jwerty.key('s', function(){
+	  box.css('top', (box.position().top+1) + 'px');
+	  socket.emit('down', {user: box.attr('class'), position: box.position().top })
+  });
+  
+  jwerty.key('d', function(){
+	  box.css('left', (box.position().left+1) + 'px');
+	  socket.emit('right', {user: box.attr('class'), position: box.position().left })
+  });
+  
   socket.on('up', function(data){
-	  console.log(data);
-  })
+	  console.log('up: ' + data.position);
+  });
+  
+  socket.on('down', function(data){
+	  console.log('down: ' + data.position);
+  });
+  
+  socket.on('left', function(data){
+	  console.log('left: ' + data.position);
+  });
+  
+  socket.on('right', function(data){
+	  console.log('right: ' + data.position);
+  });
 });

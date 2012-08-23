@@ -54,4 +54,16 @@ io.on('connection', function(socket){
 	socket.on('up', function(data){
 		io.sockets.emit('up', data)
 	})
+	
+	socket.on('left', function(data){
+		io.sockets.emit('left', data)
+	})
+	
+	socket.on('down', function(data){
+		io.sockets.emit('down', data)
+	})
+	
+	socket.on('right', function(data){
+		io.sockets.emit('right', data)
+	})
 })
