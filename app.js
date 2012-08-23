@@ -54,6 +54,8 @@ io.on('connection', function(socket){
 				top: socket.top,
 				left: socket.left
 			});
+			
+			socket.emit("clone", "some stuff");
 		});
 		
 		socket.broadcast.emit('new', {
@@ -62,6 +64,10 @@ io.on('connection', function(socket){
 			top: socket.top,
 			left: socket.left
 		})
+	});
+	
+	socket.on('disconnect', function(){
+		socket.broadcast.emit('leave', socket.id);
 	})
 	
 	socket.on('up', function(data){

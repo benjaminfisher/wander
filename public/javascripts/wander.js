@@ -6,9 +6,7 @@ $(function(){
 	  socket.emit('newuser');
 	});
   
-  socket.on('ready', function(data){
-	  console.log(data.color);
-	  
+  socket.on('ready', function(data){	  
 	  box = $('<div>')
 		.attr('class', data.id)
 		.css({
@@ -24,6 +22,10 @@ $(function(){
 		.appendTo($('body'));
   });
   
+  socket.on("clone", function(data){
+	  console.log(data);
+  });
+  
   socket.on('new', function(data){	  
 	  $('<div>')
 	  	.attr('class', data.id)
@@ -35,6 +37,10 @@ $(function(){
 	  		position: 'absolute',
 	  		padding:'1em',
 	  	}).appendTo('body');
+  });
+  
+  socket.on('leave', function(data){
+	  $('.' + data).fadeOut('slow');
   });
   
   jwerty.key('w', function(){
