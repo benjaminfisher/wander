@@ -6,7 +6,8 @@
 var express = require('express')
   , routes = require('./routes')
   , http = require('http')
-  , path = require('path');
+  , path = require('path')
+  , socketio require('socket.io');
 
 var app = express();
 
@@ -24,6 +25,7 @@ app.configure(function(){
 
 app.configure('development', function(){
   app.use(express.errorHandler());
+  app.locals.pretty = true;
 });
 
 app.get('/', routes.index);
@@ -31,3 +33,17 @@ app.get('/', routes.index);
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));
 });
+
+app.get('/', function(req, res){res.render('index')});
+
+// Socket.IO initialization
+var io = socketio.listen(server);
+
+// Configure socket connection event handler
+io.on('connection', function(){
+	// Register new user
+	socket.on('user', function(data){
+		io.sockets.emit('user', data);
+	})
+	
+})

@@ -2,6 +2,11 @@
   "name": "application-name",
   "version": "0.0.1",
   "private": true,
+  "author": {
+  	"name": "Benjamin J. Fisher",
+  	"email": "benjamin.fisher@ymail.com",
+  	"about": "http://about.me/benjaminfisher"
+  },
   "scripts": {
     "start": "node app"
   },
