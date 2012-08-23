@@ -4,20 +4,31 @@ $(function(){
 
   // Create div in random location for new user
   socket.on('new', function(data){
-    console.log(data);
-
-    $('<div>')
-    	.attr('class', 'user')
+    var user = 'user' + data.user;
+    
+    box = $('<div>')
+    	.attr('class', user)
     	.css({
     		backgroundColor: data.color,
-    		border:'1px solid white',
-    		height:'50px',
-    		width:'50px',
+    		border:'1px solid black',
     		position: 'absolute',
-    		marginTop: data.top,
-    		marginLeft: data.left,
+    		top: data.top,
+    		left: data.left,
+    		textAlign:'center',
+    		padding:'1em',
     	})
     	.text("YOU")
-    	.appendTo($("#wasteland"));
+    	.appendTo($('body'));
+    
+    return box;
   });
+  
+  jwerty.key('w', function(){
+	  box.css('top', (box.position().top-1) + 'px');
+	  socket.emit('up', {user: box.attr('class'), position: box.position().top })
+  });
+  
+  socket.on('up', function(data){
+	  console.log(data);
+  })
 });

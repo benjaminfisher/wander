@@ -49,5 +49,9 @@ io.on('connection', function(socket){
 		'color': "rgb(" + Math.floor(Math.random()*255) + "," + Math.floor(Math.random()*255) + "," + Math.floor(Math.random()*255) + ")",
 		'top': Math.floor(Math.random()*500),
 		'left': Math.floor(Math.random()*500),
+	});
+	
+	socket.on('up', function(data){
+		io.sockets.emit('up', data)
 	})
 })

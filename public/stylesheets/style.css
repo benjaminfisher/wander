@@ -10,6 +10,7 @@ a {
 #wasteland{
 	background-color:#000;
 	height:500px;
+	position:relative;
 	width:100%;
 	overflow:auto;
 }
