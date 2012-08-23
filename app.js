@@ -38,32 +38,45 @@ server.listen(app.get('port'), function(){
 app.get('/', function(req, res){res.render('index')});
 
 // Socket.IO initialization
-var io = socketio.listen(server),
-	users = [];
+var io = socketio.listen(server);
 
 // Configure socket connection event handler
 io.on('connection', function(socket){
 	// Register new user
-	socket.emit('new', {
-		'user': users.length+1,
-		'color': "rgb(" + Math.floor(Math.random()*255) + "," + Math.floor(Math.random()*255) + "," + Math.floor(Math.random()*255) + ")",
-		'top': Math.floor(Math.random()*500),
-		'left': Math.floor(Math.random()*500),
-	});
+	socket.on('newuser', function(){
+		socket.color = "rgb(" + Math.floor(Math.random()*255) + "," + Math.floor(Math.random()*255) + "," + Math.floor(Math.random()*255) + ")";
+		socket.top = Math.floor(Math.random()*500);
+		socket.left = Math.floor(Math.random()*500);
+		socket.set("id", io.sockets.manager.server._connections, function(){
+			socket.emit("ready", {
+				id: socket.id,
+				color: socket.color,
+				top: socket.top,
+				left: socket.left
+			});
+		});
+		
+		socket.broadcast.emit('new', {
+			id: socket.id,
+			color: socket.color,
+			top: socket.top,
+			left: socket.left
+		})
+	})
 	
 	socket.on('up', function(data){
-		io.sockets.emit('up', data)
+		socket.broadcast.emit('up', {user: socket.id, pos: data.position});
 	})
 	
 	socket.on('left', function(data){
-		io.sockets.emit('left', data)
+		socket.broadcast.emit('left', {user: socket.id, pos: data.position});
 	})
 	
 	socket.on('down', function(data){
-		io.sockets.emit('down', data)
+		socket.broadcast.emit('down', {user: socket.id, pos: data.position});
 	})
 	
 	socket.on('right', function(data){
-		io.sockets.emit('right', data)
+		socket.broadcast.emit('right', {user: socket.id, pos: data.position});
 	})
 })
