@@ -7,7 +7,7 @@ var express = require('express')
   , routes = require('./routes')
   , http = require('http')
   , path = require('path')
-  , socketio require('socket.io');
+  , socketio = require('socket.io');
 
 var app = express();
 
@@ -30,20 +30,24 @@ app.configure('development', function(){
 
 app.get('/', routes.index);
 
-http.createServer(app).listen(app.get('port'), function(){
-  console.log("Express server listening on port " + app.get('port'));
+var server = http.createServer(app);
+server.listen(app.get('port'), function(){
+  console.log("Wander listening on port " + app.get('port'));
 });
 
 app.get('/', function(req, res){res.render('index')});
 
 // Socket.IO initialization
-var io = socketio.listen(server);
+var io = socketio.listen(server),
+	users = [];
 
 // Configure socket connection event handler
-io.on('connection', function(){
+io.on('connection', function(socket){
 	// Register new user
-	socket.on('user', function(data){
-		io.sockets.emit('user', data);
+	socket.emit('new', {
+		'user': users.length+1,
+		'color': "rgb(" + Math.floor(Math.random()*255) + "," + Math.floor(Math.random()*255) + "," + Math.floor(Math.random()*255) + ")",
+		'top': Math.floor(Math.random()*500),
+		'left': Math.floor(Math.random()*500),
 	})
-	
 })

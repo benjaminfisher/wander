@@ -6,3 +6,10 @@ body {
 a {
   color: #00B7FF;
 }
+
+#wasteland{
+	background-color:#000;
+	height:500px;
+	width:100%;
+	overflow:auto;
+}
